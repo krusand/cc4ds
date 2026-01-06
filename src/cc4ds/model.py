@@ -20,6 +20,7 @@ class MyAwesomeModel(nn.Module):
         # make sure input tensor is flattened
         x = x.view(x.shape[0], -1)
 
+        # Add dropout layers to divide learning across nodes
         x = self.dropout(relu(self.fc1(x)))
         x = self.dropout(relu(self.fc2(x)))
         x = self.dropout(relu(self.fc3(x)))

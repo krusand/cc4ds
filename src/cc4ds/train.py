@@ -15,15 +15,23 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.ba
 app = typer.Typer()
 
 def train(lr: float = 1e-3) -> None:
-    """Train a model on MNIST."""
+    """
+    Trains the model and saves it to the models directory. 
+    Additionally saves a plot of training loss pr. epoch
+    
+    Parameters: 
+        lr (float): Learning rate for optimizer
 
-    # TODO: Implement training loop here
+    Returns: 
+        None
+    """
+
     model = MyAwesomeModel().to(DEVICE)
     train_set, _ = corrupt_mnist()
     train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=32)
 
     criterion = nn.NLLLoss()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=0.005)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr) # AdamW is faster optimizer compared to Adam/SGD
 
     epochs = 15
     steps = 0

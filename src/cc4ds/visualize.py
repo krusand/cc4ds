@@ -17,13 +17,21 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.ba
 
 
 def visualize(model_checkpoint: str) -> None:
-    """Visualize a trained model."""
+    """
+    Visualize the embeddings of the last layer in the NN using TSNE and PCA.
+    PCA is used if NN has more than 500 outputs in the last layer.
 
-    # TODO: Implement evaluation logic here
+    Parameters:
+        model_checkpoint (str): The path to the model state_dict
+
+    Returns:
+        None
+    """
+
     model = MyAwesomeModel().to(DEVICE)
     model.load_state_dict(torch.load(model_checkpoint))
     model.eval()
-    model.fc4 = nn.Identity()
+    model.fc4 = nn.Identity() # Disable last layer feeding into softmax
 
     _, test_set = corrupt_mnist()
     test_dataloader = torch.utils.data.DataLoader(test_set, batch_size=32)
